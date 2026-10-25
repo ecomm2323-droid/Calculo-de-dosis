@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cálculo de dosis · Farmacología desde Cero</title>
+<style>
+:root{--navy:#123B5D;--teal:#1F7A8C;--green:#35B779;--bg:#F3F7F9;--card:#fff;--ink:#17212B;--mute:#5D6E7B;--amber:#F2A93B;--red:#D9534F;--line:#DCE6EF;--tealL:#D6ECF0;--greenL:#D8F1E4;--amberL:#FCEBCB;--redL:#FBE0DF}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1A24;--card:#16263A;--ink:#E8EEF3;--mute:#9DB0BF;--line:#26405A;--tealL:#173C48;--greenL:#16402F;--amberL:#4A3913;--redL:#4A2020;--navy:#8CC7E8}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 48px}
+header{background:linear-gradient(135deg,#0B2A44,#1F7A8C);color:#fff;padding:22px 16px 18px}
+header .in{max-width:860px;margin:0 auto}
+header small{letter-spacing:.14em;font-weight:700;font-size:11px;opacity:.85}
+header h1{margin:4px 0 2px;font-size:26px;line-height:1.15}
+header p{margin:0;opacity:.9;font-size:14px}
+.warn{background:var(--amberL);border-left:4px solid var(--amber);padding:10px 14px;border-radius:8px;margin:16px 0;font-size:14px}
+nav{display:flex;gap:6px;margin:14px 0;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+nav button{flex:1;min-width:110px;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer}
+nav button[aria-selected=true]{background:var(--teal);border-color:var(--teal);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+h2{font-size:19px;margin:0 0 10px;color:var(--navy)}
+h3{font-size:15px;margin:0 0 8px;color:var(--teal)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--ink);padding:6px 11px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--navy);color:var(--card);border-color:var(--navy)}
+.q{font-size:18px;font-weight:600;margin:6px 0 12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);min-width:0}
+input[type=text],input[type=number]{width:130px}
+input:focus,select:focus,button:focus-visible{outline:3px solid var(--teal);outline-offset:1px}
+.unit{font-weight:700;color:var(--mute)}
+.btn{border:0;background:var(--green);color:#fff;font-weight:700;padding:10px 16px;border-radius:10px;font-size:15px;cursor:pointer}
+.btn.sec{background:var(--card);color:var(--ink);border:2px solid var(--line)}
+.fb{margin-top:12px;padding:10px 14px;border-radius:10px;font-weight:600}
+.fb.ok{background:var(--greenL)}.fb.no{background:var(--redL)}
+.steps{margin-top:10px;background:var(--bg);border-radius:10px;padding:10px 14px;font-size:15px}
+.stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:var(--mute)}
+.stat b{color:var(--ink)}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.res{margin-top:10px;padding:10px 12px;background:var(--tealL);border-radius:10px;font-weight:700;min-height:42px}
+.f{font-size:13px;color:var(--mute);margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--navy);color:var(--card)}
+.sr{position:absolute;left:-9999px}
+[hidden]{display:none!important}
+footer{color:var(--mute);font-size:12px;margin-top:22px}
+</style>
+</head>
+<body>
+<header><div class="in"><small>FARMACOLOGÍA DESDE CERO · UPSELL 1</small><h1>Cálculo de dosis</h1><p>Practicá con ejercicios infinitos y usá las calculadoras para verificar tus cuentas.</p></div></header>
+<div class="wrap">
+<div class="warn"><strong>Material educativo.</strong> Los fármacos, dosis y pacientes son <strong>ficticios</strong>. Sirve para aprender a hacer la cuenta, no para decidir qué dar ni cuánto. <strong>Nunca lo uses para preparar ni administrar un medicamento real:</strong> la dosis la define el profesional con protocolos y doble verificación.</div>
+
+<nav role="tablist" aria-label="Secciones">
+<button role="tab" aria-selected="true" data-tab="prac">Practicar</button>
+<button role="tab" aria-selected="false" data-tab="calc">Calculadoras</button>
+<button role="tab" aria-selected="false" data-tab="form">Fórmulas y reglas</button>
+</nav>
+
+<section id="prac">
+<div class="card">
+<h2>Ejercicios</h2>
+<div class="chips" id="cats" role="group" aria-label="Tema"></div>
+<div id="q" class="q" aria-live="polite"></div>
+<form id="ansf" class="row" autocomplete="off">
+<label class="sr" for="ans">Tu respuesta</label>
+<input id="ans" type="text" inputmode="decimal" placeholder="Tu resultado" required>
+<span id="aun" class="unit"></span>
+<button class="btn" type="submit">Comprobar</button>
+<button class="btn sec" type="button" id="skip">Otra pregunta</button>
+</form>
+<div id="fb" aria-live="polite"></div>
+<div id="steps" class="steps" hidden></div>
+<div class="stat" id="stat"></div>
+</div>
+<div class="card"><h3>Tu progreso por tema</h3><div id="prog"></div><p class="f">Se guarda en este dispositivo. <button class="chip" id="reset" type="button">Borrar progreso</button></p></div>
+</section>
+
+<section id="calc" hidden><div class="grid" id="calcs"></div></section>
+
+<section id="form" hidden>
+<div class="card"><h2>Método de cinco pasos</h2><ol><li>Leé qué te piden y en qué unidad.</li><li>Anotá los datos con sus unidades.</li><li>Pasá todo a las mismas unidades.</li><li>Planteá la cuenta y resolvela.</li><li>Preguntate si el resultado tiene sentido (¿10 veces más o menos?).</li></ol></div>
+<div class="card"><h2>Conversiones</h2><table><tr><th>De</th><th>A</th><th>Cómo</th></tr><tr><td>g → mg</td><td>× 1 000</td><td>1 g = 1 000 mg</td></tr><tr><td>mg → µg</td><td>× 1 000</td><td>1 mg = 1 000 µg</td></tr><tr><td>µg → ng</td><td>× 1 000</td><td></td></tr><tr><td>kg → g · L → mL</td><td>× 1 000</td><td></td></tr><tr><td>% p/v → mg/mL</td><td>× 10</td><td>1 % = 1 g/100 mL</td></tr><tr><td>1:1000</td><td>1 mg/mL</td><td>1 g en 1 000 mL</td></tr></table></div>
+<div class="card"><h2>Fórmulas</h2><table><tr><th>Qué</th><th>Fórmula</th></tr>
+<tr><td>Volumen a administrar</td><td>dosis ÷ concentración</td></tr><tr><td>Dosis por peso</td><td>mg/kg × kg</td></tr><tr><td>Dilución</td><td>C1·V1 = C2·V2</td></tr><tr><td>Infusión</td><td>volumen ÷ tiempo · gotas/min = mL/h × gotas/mL ÷ 60</td></tr><tr><td>Volumen de distribución</td><td>Vd = dosis ÷ concentración</td></tr><tr><td>Dosis de carga</td><td>(C objetivo × Vd) ÷ F</td></tr><tr><td>Mantenimiento</td><td>(CL × Css) ÷ F</td></tr><tr><td>Vida media</td><td>t½ ≈ 0,693 × Vd ÷ CL</td></tr><tr><td>Biodisponibilidad</td><td>F = AUC oral ÷ AUC IV</td></tr><tr><td>Lo que queda</td><td>(½)ⁿ tras n vidas medias</td></tr></table></div>
+<div class="card"><h2>Reglas de escritura</h2><ul><li><strong>0,5 mg</strong>, nunca «,5 mg».</li><li><strong>5 mg</strong>, nunca «5,0 mg».</li><li>Escribí «unidades» y «microgramos» si hay riesgo de confusión.</li><li>Un resultado 10 veces mayor o menor que lo esperable es la señal más frecuente de error.</li></ul></div>
+</section>
+<footer>Farmacología desde Cero · Material educativo. No reemplaza la formación ni la consulta profesional. Los datos son ilustrativos.</footer>
+</div>
+<script>
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const R=a=>a[Math.floor(Math.random()*a.length)];
+const num=x=>{x=+x.toFixed(3);return String(x).replace(".",",")};
+const parse=s=>{s=String(s).trim().replace(/\s/g,"").replace(/\.(?=\d{3}(\D|$))/g,"").replace(",",".");const v=parseFloat(s);return isFinite(v)&&/^[-+]?\d*\.?\d+$/.test(s)?v:NaN};
+const F={kg:1e3,g:1,mg:1e-3,"µg":1e-6,ng:1e-9,L:1,mL:1e-3};
+const MASS=["kg","g","mg","µg","ng"],VOL=["L","mL"];
+// ---- generadores: {q, unit, ans, steps}
+const G={
+unidades(){const pairs=[["g","mg"],["mg","g"],["mg","µg"],["µg","mg"],["µg","ng"],["ng","µg"],["kg","g"],["g","kg"],["L","mL"],["mL","L"]];
+ const [a,b]=R(pairs);const v=R([0.25,0.5,1.5,2.5,0.04,3,12,65,250,500,750,1500,0.002]);const r=v*F[a]/F[b];
+ return{cat:"Unidades",q:`Convertí ${num(v)} ${a} a ${b}.`,unit:b,ans:r,steps:`1 ${a} = ${num(F[a]/F[b])} ${b}. ${num(v)} × ${num(F[a]/F[b])} = ${num(r)} ${b}.`}},
+conc(){const t=R([0,1,2]);
+ if(t==0){const p=R([0.9,5,10,20,2,0.05,0.45,1]);return{cat:"Concentraciones",q:`Una solución al ${num(p)} % p/v: ¿cuántos mg hay en cada mL?`,unit:"mg/mL",ans:p*10,steps:`${num(p)} % = ${num(p)} g/100 mL = ${num(p*1000)} mg/100 mL = ${num(p*10)} mg/mL.`}}
+ if(t==1){const c=R([1,5,10,20,40,50,0.5]);return{cat:"Concentraciones",q:`Una solución de ${num(c)} mg/mL: ¿qué porcentaje p/v es?`,unit:"%",ans:c/10,steps:`${num(c)} mg/mL × 100 mL = ${num(c*100)} mg = ${num(c/10)} g en 100 mL → ${num(c/10)} %.`}}
+ const x=R([125,200,250,400]),v=R([2.5,7.5,10,12.5,15]);return{cat:"Concentraciones",q:`Una suspensión tiene ${x} mg en cada 5 mL. ¿Cuántos mg hay en ${num(v)} mL?`,unit:"mg",ans:x/5*v,steps:`${x} ÷ 5 = ${num(x/5)} mg/mL. ${num(x/5)} × ${num(v)} = ${num(x/5*v)} mg.`}},
+peso(){const t=R([0,1]);const kg=R([8.5,12,20,25,50,60,70,15]);
+ if(t==0){const d=R([2,5,10,15,0.1,0.5,0.2]);return{cat:"Dosis por peso",q:`Un fármaco ficticio se indica a ${num(d)} mg/kg. ¿Cuántos mg corresponden a una persona de ${num(kg)} kg?`,unit:"mg",ans:d*kg,steps:`${num(d)} mg/kg × ${num(kg)} kg = ${num(d*kg)} mg.`}}
+ const d=R([15,30,40,60]),n=R([2,3,4]);return{cat:"Dosis por peso",q:`Dosis diaria ficticia de ${d} mg/kg/día, dividida en ${n} tomas, para ${num(kg)} kg. ¿Cuántos mg por toma?`,unit:"mg",ans:d*kg/n,steps:`${d} × ${num(kg)} = ${num(d*kg)} mg/día. ${num(d*kg)} ÷ ${n} = ${num(d*kg/n)} mg por toma.`}},
+volumen(){const c=R([10,20,25,40,50,100,250]),v=R([0.5,1,1.5,2,2.5,3,4,5]);const d=c*v;
+ return{cat:"Volumen a administrar",q:`Se necesitan ${num(d)} mg y la solución es de ${num(c)} mg/mL. ¿Cuántos mL?`,unit:"mL",ans:v,steps:`Volumen = dosis ÷ concentración = ${num(d)} ÷ ${num(c)} = ${num(v)} mL.`}},
+dilucion(){const c1=R([50,100,10,20]),c2=R([1,2,5]),v2=R([100,200,250,500]);const v1=c2*v2/c1;
+ return{cat:"Diluciones",q:`¿Qué volumen de una solución de ${c1} mg/mL hace falta para preparar ${v2} mL de ${c2} mg/mL?`,unit:"mL",ans:v1,steps:`C1·V1 = C2·V2 → ${c1} × V1 = ${c2} × ${v2} → V1 = ${num(c2*v2)} ÷ ${c1} = ${num(v1)} mL (y se completa hasta ${v2} mL).`}},
+infusion(){const t=R([0,1]);const V=R([250,500,1000]),h=R([2,4,5,8,10]);
+ if(t==0)return{cat:"Infusión",q:`Pasar ${V} mL en ${h} horas. ¿Velocidad en mL/h?`,unit:"mL/h",ans:V/h,steps:`${V} ÷ ${h} = ${num(V/h)} mL/h.`};
+ const f=R([10,15,20]);const r=V/h*f/60;return{cat:"Infusión",q:`Pasar ${V} mL en ${h} horas con equipo de ${f} gotas/mL. ¿Gotas por minuto? (redondeá a 1 decimal)`,unit:"gotas/min",ans:r,tol:0.03,steps:`${V} ÷ ${h} = ${num(V/h)} mL/h. ${num(V/h)} × ${f} ÷ 60 = ${num(r)} gotas/min.`}},
+farma(){const t=R([0,1,2,3,4]);
+ if(t==0){const D=R([400,800,1000,1600]),h=R([2,4,6,8]),n=R([2,3,4]);return{cat:"Farmacocinética",q:`t½ = ${h} h. Dosis única de ${D} mg. ¿Cuántos mg quedan a las ${h*n} h?`,unit:"mg",ans:D/2**n,steps:`${h*n} h = ${n} vidas medias. ${D} × (½)^${n} = ${D} ÷ ${2**n} = ${num(D/2**n)} mg.`}}
+ if(t==1){const D=R([200,500,600,1000]),C=R([5,10,20,25]);return{cat:"Farmacocinética",q:`Se administran ${D} mg por vía IV y la concentración inicial es de ${C} mg/L. ¿Cuál es el volumen de distribución?`,unit:"L",ans:D/C,steps:`Vd = dosis ÷ concentración = ${D} ÷ ${C} = ${num(D/C)} L.`}}
+ if(t==2){const C=R([4,8,10]),Vd=R([20,35,40,50]),Fb=R([1,0.5,0.8]);return{cat:"Farmacocinética",q:`Dosis de carga = (C objetivo × Vd) ÷ F. C = ${C} mg/L, Vd = ${Vd} L, F = ${num(Fb)}. ¿Cuántos mg?`,unit:"mg",ans:C*Vd/Fb,steps:`${C} × ${Vd} = ${C*Vd} mg. ${C*Vd} ÷ ${num(Fb)} = ${num(C*Vd/Fb)} mg.`}}
+ if(t==3){const CL=R([2,4,5,10]),Css=R([2,4,5,8]),tau=R([6,8,12]);return{cat:"Farmacocinética",q:`CL = ${CL} L/h y Css objetivo = ${Css} mg/L (F = 1). ¿Cuántos mg hay que dar en cada intervalo de ${tau} h?`,unit:"mg",ans:CL*Css*tau,steps:`Velocidad = CL × Css = ${CL} × ${Css} = ${CL*Css} mg/h. En ${tau} h: ${CL*Css} × ${tau} = ${CL*Css*tau} mg.`}}
+ const a=R([30,36,45,60]),b=R([60,90]);const k=a/b;return{cat:"Farmacocinética",q:`AUC oral = ${a} y AUC IV = ${b} (misma dosis). ¿Cuál es la biodisponibilidad F (entre 0 y 1)?`,unit:"",ans:k,tol:0.02,steps:`F = AUC oral ÷ AUC IV = ${a} ÷ ${b} = ${num(k)}.`}}
+};
+const CATS=[["todos","Todos"],["unidades","Unidades"],["conc","Concentraciones"],["peso","Dosis por peso"],["volumen","Volumen"],["dilucion","Diluciones"],["infusion","Infusión"],["farma","Farmacocinética"]];
+let cat="todos",cur=null,done=false;
+const store={get(){try{return JSON.parse(localStorage.getItem("cdd")||"{}")}catch(e){return {}}},set(o){try{localStorage.setItem("cdd",JSON.stringify(o))}catch(e){}}};
+let P=store.get();
+function renderCats(){$("#cats").innerHTML=CATS.map(([k,l])=>`<button type="button" class="chip" data-c="${k}" aria-pressed="${k==cat}">${l}</button>`).join("")}
+function next(){const key=cat=="todos"?R(Object.keys(G)):cat;cur=G[key]();cur.key=key;done=false;$("#q").textContent=cur.q;$("#aun").textContent=cur.unit;$("#ans").value="";$("#fb").innerHTML="";$("#steps").hidden=true;$("#ans").focus()}
+function stats(){const t=Object.values(P).reduce((a,x)=>[a[0]+x[0],a[1]+x[1]],[0,0]);$("#stat").innerHTML=`<span>Aciertos: <b>${t[0]}</b></span><span>Intentos: <b>${t[1]}</b></span>`;
+ $("#prog").innerHTML=CATS.slice(1).map(([k,l])=>{const x=P[k]||[0,0],p=x[1]?Math.round(100*x[0]/x[1]):0;return`<div style="margin:8px 0"><div class="row" style="justify-content:space-between"><span>${l}</span><span class="f">${x[0]}/${x[1]} · ${p} %</span></div><div class="bar"><i style="width:${p}%"></i></div></div>`}).join("")}
+$("#ansf").addEventListener("submit",e=>{e.preventDefault();if(done)return;const v=parse($("#ans").value);if(isNaN(v)){$("#fb").innerHTML='<div class="fb no">Escribí un número (podés usar coma).</div>';return}
+ const tol=cur.tol||0.01,ok=Math.abs(v-cur.ans)<=Math.max(Math.abs(cur.ans)*tol,1e-6);done=true;
+ const x=P[cur.key]||[0,0];x[1]++;if(ok)x[0]++;P[cur.key]=x;store.set(P);stats();
+ $("#fb").innerHTML=ok?`<div class="fb ok">¡Correcto! ${num(cur.ans)} ${cur.unit}</div><p><button class="btn" type="button" id="nx">Siguiente</button></p>`:`<div class="fb no">No coincide. La respuesta es ${num(cur.ans)} ${cur.unit}. Mirá la resolución y revisá las unidades.</div><p><button class="btn" type="button" id="nx">Siguiente</button></p>`;
+ $("#steps").hidden=false;$("#steps").innerHTML=`<strong>Resolución.</strong> ${cur.steps}`;});
+document.addEventListener("click",e=>{const c=e.target.closest("[data-c]");if(c){cat=c.dataset.c;renderCats();next()}if(e.target.id=="nx")next();
+ if(e.target.id=="reset"&&confirm("¿Borrar el progreso de este dispositivo?")){P={};store.set(P);stats()}
+ const tb=e.target.closest("[data-tab]");if(tb){$$("nav button").forEach(b=>b.setAttribute("aria-selected",b==tb));["prac","calc","form"].forEach(id=>$("#"+id).hidden=id!=tb.dataset.tab)}});
+$("#skip").addEventListener("click",next);
+// ---- calculadoras
+const U=(id,opts,def)=>`<select id="${id}">${opts.map(o=>`<option${o==def?" selected":""}>${o}</option>`).join("")}</select>`;
+const I=(id,ph,v="")=>`<input id="${id}" type="text" inputmode="decimal" placeholder="${ph}" value="${v}" aria-label="${ph}">`;
+const CALC=[
+{t:"Conversor de unidades",f:"valor × (factor de origen ÷ factor de destino)",h:()=>`<div class="row">${I("c1v","Valor","250")}${U("c1a",[...MASS,...VOL],"mg")}<span class="unit">→</span>${U("c1b",[...MASS,...VOL],"g")}</div>`,
+ r:()=>{const v=parse($("#c1v").value),a=$("#c1a").value,b=$("#c1b").value;if(isNaN(v))return"";if(MASS.includes(a)!=MASS.includes(b))return"Las unidades no son compatibles (masa con volumen).";return`${num(v)} ${a} = ${num(v*F[a]/F[b])} ${b}`}},
+{t:"% p/v ↔ mg/mL",f:"% × 10 = mg/mL",h:()=>`<div class="row">${I("c2v","Valor","5")}${U("c2u",["% p/v","mg/mL"],"% p/v")}</div>`,
+ r:()=>{const v=parse($("#c2v").value);if(isNaN(v))return"";return $("#c2u").value=="% p/v"?`${num(v)} % = ${num(v*10)} mg/mL`:`${num(v)} mg/mL = ${num(v/10)} %`}},
+{t:"Volumen a administrar",f:"dosis ÷ concentración",h:()=>`<div class="row">${I("c3d","Dosis","300")}<span class="unit">mg</span>${I("c3c","Concentración","100")}<span class="unit">mg/mL</span></div>`,
+ r:()=>{const d=parse($("#c3d").value),c=parse($("#c3c").value);if(isNaN(d)||isNaN(c)||c<=0)return"";return`${num(d/c)} mL`}},
+{t:"Dosis por peso",f:"mg/kg × kg ÷ n.º de tomas",h:()=>`<div class="row">${I("c4d","mg/kg","5")}<span class="unit">mg/kg</span>${I("c4k","Peso","60")}<span class="unit">kg</span>${I("c4n","Tomas","1")}<span class="unit">tomas</span></div>`,
+ r:()=>{const d=parse($("#c4d").value),k=parse($("#c4k").value),n=parse($("#c4n").value)||1;if(isNaN(d)||isNaN(k))return"";return`Total: ${num(d*k)} mg · por toma: ${num(d*k/n)} mg`}},
+{t:"Dilución C1·V1 = C2·V2",f:"V1 = C2 × V2 ÷ C1",h:()=>`<div class="row">${I("c5a","C1","50")}<span class="unit">C1</span>${I("c5b","C2","5")}<span class="unit">C2</span>${I("c5c","V2 (mL)","200")}<span class="unit">V2 mL</span></div>`,
+ r:()=>{const a=parse($("#c5a").value),b=parse($("#c5b").value),c=parse($("#c5c").value);if([a,b,c].some(isNaN)||a<=0)return"";if(b>a)return"C2 no puede ser mayor que C1 al diluir.";const v=b*c/a;return`V1 = ${num(v)} mL de la solución concentrada + ${num(c-v)} mL de diluyente = ${num(c)} mL`}},
+{t:"Velocidad de infusión",f:"mL/h = V ÷ h · gotas/min = mL/h × factor ÷ 60",h:()=>`<div class="row">${I("c6v","Volumen","500")}<span class="unit">mL</span>${I("c6h","Horas","4")}<span class="unit">h</span>${I("c6f","Gotas/mL","20")}<span class="unit">gotas/mL</span></div>`,
+ r:()=>{const v=parse($("#c6v").value),h=parse($("#c6h").value),f=parse($("#c6f").value);if(isNaN(v)||isNaN(h)||h<=0)return"";const m=v/h;return`${num(m)} mL/h`+(isNaN(f)?"":` · ${num(m*f/60)} gotas/min`)}},
+{t:"Vida media: cuánto queda",f:"dosis × (½)^(tiempo ÷ t½)",h:()=>`<div class="row">${I("c7d","Dosis","800")}<span class="unit">mg</span>${I("c7h","t½","4")}<span class="unit">h</span>${I("c7t","Tiempo","12")}<span class="unit">h</span></div>`,
+ r:()=>{const d=parse($("#c7d").value),h=parse($("#c7h").value),t=parse($("#c7t").value);if([d,h,t].some(isNaN)||h<=0)return"";const n=t/h;return`${num(n)} vidas medias → quedan ${num(d*Math.pow(.5,n))} mg (${num(100*Math.pow(.5,n))} %)`}},
+{t:"Carga y mantenimiento",f:"carga = C × Vd ÷ F · mantenimiento = CL × Css × τ ÷ F",h:()=>`<div class="row">${I("c8c","C objetivo","8")}<span class="unit">mg/L</span>${I("c8v","Vd","35")}<span class="unit">L</span>${I("c8f","F","1")}<span class="unit">F</span></div><div class="row" style="margin-top:8px">${I("c8l","CL","5")}<span class="unit">L/h</span>${I("c8t","Intervalo","12")}<span class="unit">h</span></div>`,
+ r:()=>{const c=parse($("#c8c").value),v=parse($("#c8v").value),f=parse($("#c8f").value),l=parse($("#c8l").value),t=parse($("#c8t").value);if([c,v,f].some(isNaN)||f<=0||f>1)return"F debe estar entre 0 y 1.";let s=`Carga: ${num(c*v/f)} mg`;if(!isNaN(l)&&!isNaN(t))s+=` · Mantenimiento: ${num(c*l/f)} mg/h = ${num(c*l*t/f)} mg cada ${num(t)} h`;return s}}
+];
+$("#calcs").innerHTML=CALC.map((c,i)=>`<div class="card"><h3>${c.t}</h3>${c.h()}<div class="res" id="r${i}" aria-live="polite"></div><div class="f">${c.f}</div></div>`).join("");
+function upd(){CALC.forEach((c,i)=>{$("#r"+i).textContent=c.r()})}
+$("#calcs").addEventListener("input",upd);$("#calcs").addEventListener("change",upd);
+renderCats();stats();next();upd();
+</script>
+</body>
+</html>
